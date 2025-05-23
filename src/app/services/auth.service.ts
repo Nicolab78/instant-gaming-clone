@@ -21,8 +21,9 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login`, { email, password });
   }
 
-  handleLoginSuccess(token: string): void {
+  handleLoginSuccess(token: string, email: string): void {
     localStorage.setItem('token', token);
+    localStorage.setItem('userEmail', email);
     this.isLoggedInSubject.next(true);
     this.router.navigate(['/']);
   }

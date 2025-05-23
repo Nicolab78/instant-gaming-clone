@@ -22,14 +22,17 @@ export class LoginComponent {
   ) {}
 
   onLogin() {
-    console.log('Tentative de login avec', this.email, this.password);
-    this.auth.login(this.email, this.password).subscribe({
-      next: (res) => {
-        this.auth.handleLoginSuccess(res.token);
-      },
-      error: (err) => {
-        this.errorMessage = err.error.message || 'Erreur de connexion';
-      }
-    });
-  }
+  console.log('Tentative de login avec', this.email, this.password);
+  
+  this.auth.login(this.email, this.password).subscribe({
+    next: (res) => {
+      console.log('Réponse backend =', res);
+      this.auth.handleLoginSuccess(res.token, res.email);
+    },
+    error: (err) => {
+      this.errorMessage = err.error.message || 'Erreur de connexion';
+    }
+  });
+}
+
 }

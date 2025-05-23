@@ -1,10 +1,45 @@
 <div *ngIf="game" class="game-detail">
   <h1>{{ game.title }}</h1>
+
   <img *ngIf="game.image_url" [src]="'/assets/img/' + game.image_url" [alt]="game.title" />
+
   <p>{{ game.description }}</p>
   <p><strong>Prix :</strong> {{ game.price }} €</p>
   <p><strong>Date de sortie :</strong> {{ game.release_date | date }}</p>
+
   <button>Ajouter au panier</button>
+
+  <hr />
+  <h2>Avis des joueurs</h2>
+
+  <!-- Zone de saisie d'avis -->
+  <div *ngIf="isConnected; else notConnected">
+    <textarea
+      [(ngModel)]="newReview"
+      placeholder="Ton avis..."
+      rows="4"
+      cols="50">
+    </textarea>
+    <br />
+    <button (click)="addReview()">Envoyer</button>
+  </div>
+
+  <!-- Message si non connecté -->
+  <ng-template #notConnected>
+    <p><em>Connecte-toi pour laisser un avis.</em></p>
+  </ng-template>
+
+  <!-- Avis existants -->
+  <div *ngIf="reviews.length === 0">
+    <p><em>Aucun avis pour ce jeu.</em></p>
+  </div>
+
+  <div *ngFor="let review of reviews" class="review">
+    <p>
+      <strong>{{ review.user_email }}</strong>
+      <small>{{ review.created_at | date:'short' }}</small>
+    </p>
+    <p>{{ review.content }}</p>
+    <hr />
+  </div>
 </div>
-
-
