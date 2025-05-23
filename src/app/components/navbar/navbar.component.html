@@ -1,10 +1,19 @@
 <nav class="navbar">
-    <div class="logo">🎮 Instant Gaming</div>
-    <ul class="nav-links">
-      <li><a routerLink="/">Accueil</a></li>
-      <li><a routerLink="/catalogue">Catalogue</a></li>
-      <li><a routerLink="/panier">Panier</a></li>
-      <li><a routerLink="/login">Connexion</a></li>
-    </ul>
-  </nav>
-  
+  <div class="logo">🎮 Instant Gaming</div>
+  <ul class="nav-links">
+    <li><a routerLink="/">Accueil</a></li>
+    <li><a routerLink="/catalogue">Catalogue</a></li>
+    <li><a routerLink="/panier">Panier</a></li>
+
+    <ng-container *ngIf="isLoggedIn; else notLoggedIn">
+      <li><a routerLink="/profile">Profil</a></li>
+      <li><a (click)="logout()" style="cursor: pointer;">Déconnexion</a></li>
+    </ng-container>
+
+    <ng-template #notLoggedIn>
+      <ng-container>
+        <li><a routerLink="/login">Connexion</a></li>
+      </ng-container>
+    </ng-template>
+  </ul>
+</nav>

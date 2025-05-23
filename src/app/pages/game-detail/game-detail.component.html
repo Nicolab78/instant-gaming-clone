@@ -1,0 +1,10 @@
+<div *ngIf="game" class="game-detail">
+  <h1>{{ game.title }}</h1>
+  <img *ngIf="game.image_url" [src]="'/assets/img/' + game.image_url" [alt]="game.title" />
+  <p>{{ game.description }}</p>
+  <p><strong>Prix :</strong> {{ game.price }} €</p>
+  <p><strong>Date de sortie :</strong> {{ game.release_date | date }}</p>
+  <button>Ajouter au panier</button>
+</div>
+
+
