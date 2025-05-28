@@ -1,1 +1,17 @@
-<p>wishlist works!</p>
+<div class="wishlist_container">
+  <h1>Ma wishlist</h1>
+
+  <div *ngIf="message" class="success">{{ message }}</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="wishlist.length === 0">
+    <p>Ta wishlist est vide</p>
+  </div>
+
+  <div *ngFor="let game of wishlist" class="wishlist-item">
+    <h3>{{ game.title }}</h3>
+    <p>{{ game.description }}</p>
+    <strong>{{ game.price }} €</strong>
+    <button (click)="removeFromWishlist(game.id)">Retirer de la wishlist</button>
+  </div>
+</div>

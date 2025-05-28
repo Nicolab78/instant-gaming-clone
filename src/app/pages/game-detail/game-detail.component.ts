@@ -79,24 +79,31 @@ export class GameDetailComponent implements OnInit {
 
   addToWishlist(): void {
   const userEmail = localStorage.getItem('userEmail');
-  const gameId = this.game?.id;
+  const gameId = this.game.id;
 
   if (!userEmail || !gameId) {
-    console.error('Utilisateur non connecté ou jeu inconnu');
+    console.error('Champs manquants');
     return;
   }
 
-  const body = { user_email: userEmail, game_id: gameId };
+  const body = {
+    user_email: userEmail,
+    game_id: gameId
+  };
 
   this.http.post('http://localhost:3000/api/wishlist', body).subscribe({
     next: () => alert('Jeu ajouté à la wishlist !'),
     error: (err) => {
-      console.error('Erreur ajout wishlist', err);
-      alert('Erreur lors de l\’ajout à la wishlist.');
+      console.error('Erreur lors de l’ajout à la wishlist.', err);
+      alert('Erreur lors de l’ajout à la wishlist.');
     }
   });
 }
 
-
-
 }
+
+
+
+
+
+
