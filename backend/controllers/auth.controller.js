@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 
 exports.loginUser = (req, res) => {
   const { email, password } = req.body;
-  console.log('🧪 Reçu depuis Angular :', req.body); 
+  console.log('Reçu depuis Angular :', req.body); 
 
   if (!email || !password) {
     console.log('Email ou mot de passe manquant');
