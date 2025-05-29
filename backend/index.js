@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const gamesRoutes = require('./routes/games.routes');
 const authRoutes = require('./routes/auth.routes');
 const wishlistRoutes = require('./routes/wishlist.routes');
+const cartRoutes = require('./routes/cart.routes')
 const db = require('./db');
 
 const app = express();
@@ -19,7 +20,8 @@ app.use(bodyParser.json());
 // Routes
 app.use('/api/games', gamesRoutes);
 app.use('/api', authRoutes);
-app.use('/api/wishlist', wishlistRoutes); 
+app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/cart', cartRoutes); 
 
 // Route test
 app.get('/', (req, res) => {

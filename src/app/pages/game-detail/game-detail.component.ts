@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-game-detail',
@@ -21,7 +22,8 @@ export class GameDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -100,10 +102,26 @@ export class GameDetailComponent implements OnInit {
   });
 }
 
+  addToCart(): void {
+  if (!this.userEmail || !this.game?.id) {
+    console.error('Utilisateur non connecté ou ID de jeu manquant');
+    alert("Tu dois être connecté pour ajouter au panier.");
+    return;
+  }
+
+  this.cartService.addToCart(this.game, this.userEmail).subscribe({
+    next: () => alert('Jeu ajouté au panier !'),
+    error: (err) => {
+      console.error('Erreur ajout panier', err);
+      alert('Erreur lors de l’ajout au panier.');
+    }
+  });
 }
 
 
 
 
+
+}
 
 

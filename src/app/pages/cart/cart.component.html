@@ -1,0 +1,19 @@
+<div class="cart_container">
+  <h1>Mon panier</h1>
+
+  <div *ngIf="cartItems.length === 0">
+    <p>Ton panier est vide</p>
+  </div>
+
+  <div *ngFor="let game of cartItems" class="cart-item">
+    <h3>{{ game.title }}</h3>
+    <p>{{ game.description }}</p>
+    <strong>{{ game.price }} €</strong>
+    <button (click)="removeFromCart(game.id)">Retirer du panier</button>
+  </div>
+
+  <div *ngIf="cartItems.length > 0" class="total">
+    <h3>Total : {{ totalPrice.toFixed(2) }} €</h3>
+
+  </div>
+</div>

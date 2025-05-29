@@ -7,8 +7,10 @@
   <p><strong>Prix :</strong> {{ game.price }} €</p>
   <p><strong>Date de sortie :</strong> {{ game.release_date | date }}</p>
 
-  <button>Ajouter au panier</button>
+  <<button *ngIf="isConnected" (click)="addToCart()">Ajouter au panier</button>
+
   <button (click)="addToWishlist()">Ajouter à la wishlist</button>
+
 
 
   <hr />
