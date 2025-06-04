@@ -1,7 +1,7 @@
 const mysql = require('mysql2');
 
 const pool = mysql.createPool({
-  host: 'mysql',               // ⚠️ nom du service docker
+  host: 'mysql',               
   user: 'root',
   password: 'root',
   database: 'instant_gaming',
