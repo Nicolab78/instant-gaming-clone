@@ -1,7 +1,7 @@
 const db = require('../db');         
 const bcrypt = require('bcrypt');   
 
-
+// Connexion utilisateur
 exports.loginUser = (req, res) => {
   const { email, password } = req.body;
   console.log('Reçu depuis Angular :', req.body); 
@@ -26,9 +26,6 @@ exports.loginUser = (req, res) => {
     const user = results[0];
     console.log('Utilisateur trouvé :', user.email);
 
-   
-    const bcrypt = require('bcrypt'); 
-
     bcrypt.compare(password, user.password, (bcryptErr, isMatch) => {
       if (bcryptErr) {
         console.error('Erreur bcrypt :', bcryptErr);
@@ -43,15 +40,17 @@ exports.loginUser = (req, res) => {
       console.log('Connexion réussie !');
       return res.status(200).json({
         message: 'Connexion réussie',
-        userId: user.id,
-        email: user.email,
-        token: 'fake-token'
+        token: 'fake-token', // Remplace par un vrai token si besoin
+        user: {
+          id: user.id,
+          email: user.email
+        }
       });
     });
   });
 };
 
-
+// Inscription utilisateur
 exports.registerUser = (req, res) => {
   const { email, password } = req.body;
 

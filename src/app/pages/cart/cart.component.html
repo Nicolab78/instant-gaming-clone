@@ -8,12 +8,14 @@
   <div *ngFor="let game of cartItems" class="cart-item">
     <h3>{{ game.title }}</h3>
     <p>{{ game.description }}</p>
-    <strong>{{ game.price }} €</strong>
+    <p>Prix unitaire : {{ game.price }} €</p>
+    <p>Quantité : {{ game.quantity }}</p>
+    <p><strong>Sous-total : {{ (game.price * game.quantity).toFixed(2) }} €</strong></p>
     <button (click)="removeFromCart(game.id)">Retirer du panier</button>
   </div>
 
   <div *ngIf="cartItems.length > 0" class="total">
     <h3>Total : {{ totalPrice.toFixed(2) }} €</h3>
-
+    <button routerLink="/confirmation">Valider la commande</button>
   </div>
 </div>

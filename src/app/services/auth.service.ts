@@ -21,25 +21,25 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login`, { email, password });
   }
 
-  handleLoginSuccess(token: string, email: string): void {
+  handleLoginSuccess(token: string, userId: number): void {
     localStorage.setItem('token', token);
-    localStorage.setItem('userEmail', email);
+    localStorage.setItem('userId', userId.toString());
     this.isLoggedInSubject.next(true);
     this.router.navigate(['/']);
   }
 
   logout(): void {
-  localStorage.removeItem('token');
-  this.isLoggedInSubject.next(false);
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    this.isLoggedInSubject.next(false);
 
-  const currentUrl = this.router.url;
-  const protectedRoutes = ['/profile'];
+    const currentUrl = this.router.url;
+    const protectedRoutes = ['/profile', '/wishlist', '/cart'];
 
-  if (protectedRoutes.includes(currentUrl)) {
-    this.router.navigate(['/']);
+    if (protectedRoutes.includes(currentUrl)) {
+      this.router.navigate(['/']);
+    }
   }
-}
-
 
   private hasToken(): boolean {
     return localStorage.getItem('token') !== null;

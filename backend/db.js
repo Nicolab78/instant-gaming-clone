@@ -1,18 +1,13 @@
 const mysql = require('mysql2');
 
-const db = mysql.createConnection({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'instant_gaming'
+const pool = mysql.createPool({
+  host: 'mysql',               // ⚠️ nom du service docker
+  user: 'root',
+  password: 'root',
+  database: 'instant_gaming',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
-db.connect((err) => {
-  if (err) {
-    console.error('❌ Erreur MySQL :', err);
-    return;
-  }
-  console.log('✅ Connecté à MySQL');
-});
-
-module.exports = db;
+module.exports = pool;

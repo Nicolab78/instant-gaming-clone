@@ -11,14 +11,14 @@ import { CartService } from '../../services/cart.service';
 })
 export class CartComponent implements OnInit {
   cartItems: any[] = [];
-  userEmail: string = localStorage.getItem('userEmail') || '';
+  userId: string = localStorage.getItem('userId') || '';
   totalPrice: number = 0;
 
   constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
-    if (this.userEmail) {
-      this.cartService.getCart(this.userEmail).subscribe({
+    if (this.userId) {
+      this.cartService.getCart(this.userId).subscribe({
         next: (data) => {
           this.cartItems = data;
           this.calculateTotal();
@@ -29,9 +29,9 @@ export class CartComponent implements OnInit {
   }
 
   removeFromCart(gameId: number): void {
-    if (!this.userEmail) return;
+    if (!this.userId) return;
 
-    this.cartService.removeFromCart(this.userEmail, gameId).subscribe({
+    this.cartService.removeFromCart(this.userId, gameId).subscribe({
       next: () => {
         this.cartItems = this.cartItems.filter(item => item.id !== gameId);
         this.calculateTotal();
@@ -41,9 +41,8 @@ export class CartComponent implements OnInit {
   }
 
   calculateTotal(): void {
-  this.totalPrice = this.cartItems.reduce(
-    (total, item) => total + parseFloat(item.price), 0
-  );
-}
-
+    this.totalPrice = this.cartItems.reduce(
+      (total, item) => total + parseFloat(item.price) * item.quantity, 0
+    );
+  }
 }

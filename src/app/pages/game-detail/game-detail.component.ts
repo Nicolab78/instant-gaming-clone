@@ -17,7 +17,7 @@ export class GameDetailComponent implements OnInit {
   reviews: any[] = [];
   newReview: string = '';
 
-  userEmail: string = '';
+  userId: string = '';
   isConnected: boolean = false;
 
   constructor(
@@ -29,7 +29,7 @@ export class GameDetailComponent implements OnInit {
   ngOnInit(): void {
     const gameId = this.route.snapshot.paramMap.get('id');
 
-    this.userEmail = localStorage.getItem('userEmail') || '';
+    this.userId = localStorage.getItem('userId') || '';
     this.isConnected = !!localStorage.getItem('token');
 
     // Charger les infos du jeu
@@ -53,15 +53,14 @@ export class GameDetailComponent implements OnInit {
 
   addReview(): void {
     const gameId = this.route.snapshot.paramMap.get('id');
-    const userEmail = localStorage.getItem('userEmail');
 
-    if (!userEmail || !this.newReview.trim()) {
-      console.error('Email ou avis vide');
+    if (!this.userId || !this.newReview.trim()) {
+      console.error('userId ou avis vide');
       return;
     }
 
     const body = {
-      user_email: userEmail,
+      user_id: this.userId,
       content: this.newReview.trim()
     };
 
@@ -80,36 +79,35 @@ export class GameDetailComponent implements OnInit {
   }
 
   addToWishlist(): void {
-  const userEmail = localStorage.getItem('userEmail');
-  const gameId = this.game.id;
+    const gameId = this.game?.id;
 
-  if (!userEmail || !gameId) {
-    console.error('Champs manquants');
-    return;
+    if (!this.userId || !gameId) {
+      console.error('Champs manquants');
+      return;
+    }
+
+    const body = {
+      user_id: this.userId,
+      game_id: gameId
+    };
+
+    this.http.post('http://localhost:3000/api/wishlist', body).subscribe({
+      next: () => alert('Jeu ajouté à la wishlist !'),
+      error: (err) => {
+        console.error('Erreur lors de l’ajout à la wishlist.', err);
+        alert('Erreur lors de l’ajout à la wishlist.');
+      }
+    });
   }
 
-  const body = {
-    user_email: userEmail,
-    game_id: gameId
-  };
-
-  this.http.post('http://localhost:3000/api/wishlist', body).subscribe({
-    next: () => alert('Jeu ajouté à la wishlist !'),
-    error: (err) => {
-      console.error('Erreur lors de l’ajout à la wishlist.', err);
-      alert('Erreur lors de l’ajout à la wishlist.');
-    }
-  });
-}
-
   addToCart(): void {
-  if (!this.userEmail || !this.game?.id) {
+  if (!this.userId || !this.game?.id) {
     console.error('Utilisateur non connecté ou ID de jeu manquant');
     alert("Tu dois être connecté pour ajouter au panier.");
     return;
   }
 
-  this.cartService.addToCart(this.game, this.userEmail).subscribe({
+  this.cartService.addToCart(this.game, this.userId).subscribe({
     next: () => alert('Jeu ajouté au panier !'),
     error: (err) => {
       console.error('Erreur ajout panier', err);
@@ -118,10 +116,4 @@ export class GameDetailComponent implements OnInit {
   });
 }
 
-
-
-
-
 }
-
-

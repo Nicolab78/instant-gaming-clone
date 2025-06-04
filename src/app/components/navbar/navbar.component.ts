@@ -1,28 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterModule, CommonModule],
-  
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
+  isLoggedIn$!: Observable<boolean>;
 
+  constructor(private auth: AuthService) {}
 
-  isLoggedIn = false;
-  constructor(private auth: AuthService, private router: Router) {
-  this.auth.isLoggedIn$.subscribe(value => {
-    this.isLoggedIn = value;
-  });
-}
-
-logout() {
-    this.auth.logout(); 
+  ngOnInit(): void {
+    this.isLoggedIn$ = this.auth.isLoggedIn$;
   }
 
+  logout(): void {
+    this.auth.logout();
+  }
 }

@@ -11,20 +11,20 @@ export class CartService {
 
   constructor(private http: HttpClient) {}
 
-  addToCart(game: any, userEmail: string): Observable<any> {
+  addToCart(game: any, userId: string): Observable<any> {
     const body = {
-      user_email: userEmail,
+      user_id: userId,
       game_id: game.id
     };
     return this.http.post(`${this.apiUrl}`, body);
   }
 
-  getCart(userEmail: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/${userEmail}`);
+  getCart(userId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/${userId}`);
   }
 
-  removeFromCart(userEmail: string, gameId: number): Observable<any> {
-  return this.http.delete(`${this.apiUrl}/${userEmail}/${gameId}`);
-}
+  removeFromCart(userId: string, gameId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${userId}/${gameId}`);
+  }
 
 }

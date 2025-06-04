@@ -1,44 +1,69 @@
 const db = require('../db');
 
-exports.addToCart = (req, res) => {
-  const { user_email, game_id } = req.body;
+const checkOrCreateCart = (user_id, callback) => {
+  const checkSql = 'SELECT id FROM cart WHERE user_id = ?';
+  db.query(checkSql, [user_id], (err, result) => {
+    if (err) return callback(err);
 
-  console.log("Données reçues pour ajout au panier :", req.body);
-
-  if (!user_email || !game_id) {
-    return res.status(400).json({ message: 'Champs manquants' });
-  }
-
-  const sql = 'INSERT INTO cart (user_email, game_id) VALUES (?, ?)';
-  db.query(sql, [user_email, game_id], (err) => {
-    if (err) {
-      console.error("Erreur SQL lors de l'ajout au panier :", err);
-      return res.status(500).json({ message: 'Erreur ajout panier' });
+    if (result.length > 0) {
+      return callback(null, result[0].id);
+    } else {
+      const createSql = 'INSERT INTO cart (user_id) VALUES (?)';
+      db.query(createSql, [user_id], (err, insertResult) => {
+        if (err) return callback(err);
+        callback(null, insertResult.insertId);
+      });
     }
-
-    res.status(201).json({ message: 'Jeu ajouté au panier' });
   });
 };
 
-   
+exports.addToCart = (req, res) => {
+  const { user_id, game_id } = req.body;
 
-    exports.getCart = (req, res) => {
-  const email = req.params.email;
+  console.log("Données reçues pour ajout au panier :", req.body);
 
-  if (!email) {
-    return res.status(400).json({ message: 'Email requis' });
+  if (!user_id || !game_id) {
+    return res.status(400).json({ message: 'Champs manquants' });
   }
 
+  checkOrCreateCart(user_id, (err, cart_id) => {
+    if (err) {
+      console.error('Erreur panier :', err);
+      return res.status(500).json({ message: 'Erreur serveur.' });
+    }
+
+    const insertItemSql = `
+      INSERT INTO cart_items (cart_id, game_id, quantity)
+      VALUES (?, ?, 1)
+      ON DUPLICATE KEY UPDATE quantity = quantity + 1
+    `;
+
+    db.query(insertItemSql, [cart_id, game_id], (err) => {
+      if (err) {
+        console.error('Erreur ajout item :', err);
+        return res.status(500).json({ message: 'Erreur ajout panier.' });
+      }
+
+      res.status(201).json({ message: 'Jeu ajouté au panier' });
+    });
+  });
+};
+
+exports.getCart = (req, res) => {
+  const user_id = req.params.userId;
+  console.log("🎯 getCart exécuté pour l'utilisateur :", req.params.userId);
+
   const sql = `
-    SELECT g.*
-    FROM cart c
-    JOIN games g ON c.game_id = g.id
-    WHERE c.user_email = ?
+    SELECT g.*, ci.quantity
+    FROM cart_items ci
+    JOIN cart c ON ci.cart_id = c.id
+    JOIN games g ON ci.game_id = g.id
+    WHERE c.user_id = ?
   `;
 
-  db.query(sql, [email], (err, results) => {
+  db.query(sql, [user_id], (err, results) => {
     if (err) {
-      console.error("Erreur chargement panier :", err);
+      console.error("Erreur SQL lors de la récupération du panier :", err);
       return res.status(500).json({ message: 'Erreur chargement panier' });
     }
 
@@ -46,29 +71,25 @@ exports.addToCart = (req, res) => {
   });
 };
 
+exports.removeFromCart = (req, res) => {
+  const { user_id, game_id } = req.params;
 
+  const sql = `
+    DELETE ci FROM cart_items ci
+    JOIN cart c ON ci.cart_id = c.id
+    WHERE c.user_id = ? AND ci.game_id = ?
+  `;
 
+  db.query(sql, [user_id, game_id], (err, result) => {
+    if (err) {
+      console.error('Erreur suppression panier :', err);
+      return res.status(500).json({ message: 'Erreur suppression panier' });
+    }
 
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Élément non trouvé dans le panier' });
+    }
 
-
-    exports.removeFromCart = (req, res) => {
-        const { email, game_id } = req.params;
-
-        if (!email || !game_id) {
-            return res.status(400).json({ message: 'Champs manquants' });
-        }
-
-        const sql = 'DELETE FROM cart WHERE user_email = ? AND game_id = ?';
-
-        db.query(sql, [email, game_id], (err, result) => {
-            if (err) {
-                console.error('Erreur suppression panier :', err);
-            }
-
-            if (result.affectedRow === 0 ) {
-                return res.status(404).json({ message: 'Elément non trouvé dans le panier'});    
-            }
-
-            res.status(200).json({ message: 'Jeu retiré du panier'});
-        });
-    };
+    res.status(200).json({ message: 'Jeu retiré du panier' });
+  });
+};
