@@ -1,0 +1,16 @@
+<h1>Détails de la commande #{{ orderId }}</h1>
+
+<div *ngIf="items.length === 0">
+  <p>Aucun article dans cette commande.</p>
+</div>
+
+<div *ngIf="items.length > 0">
+  <div *ngFor="let item of items">
+    <h3>{{ item.title }}</h3>
+    <p>Quantité : {{ item.quantity }}</p>
+    <p>Prix unitaire : {{ item.price }} €</p>
+    <p>Sous-total : {{ item.price * item.quantity | number:'1.2-2' }} €</p>
+  </div>
+
+  <h2>Total : {{ totalPrice | number:'1.2-2' }} €</h2>
+</div>

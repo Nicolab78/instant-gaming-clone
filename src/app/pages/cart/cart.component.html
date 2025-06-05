@@ -16,6 +16,6 @@
 
   <div *ngIf="cartItems.length > 0" class="total">
     <h3>Total : {{ totalPrice.toFixed(2) }} €</h3>
-    <button routerLink="/confirmation">Valider la commande</button>
+    <button (click)="validateOrder()">Valider la commande</button>
   </div>
 </div>

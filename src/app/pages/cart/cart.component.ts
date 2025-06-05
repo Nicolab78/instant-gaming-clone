@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../services/cart.service';
+import { OrderService } from '../../services/order.service';
 
 @Component({
   selector: 'app-cart',
@@ -14,7 +15,7 @@ export class CartComponent implements OnInit {
   userId: string = localStorage.getItem('userId') || '';
   totalPrice: number = 0;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private orderService: OrderService) {}
 
   ngOnInit(): void {
     if (this.userId) {
@@ -45,4 +46,21 @@ export class CartComponent implements OnInit {
       (total, item) => total + parseFloat(item.price) * item.quantity, 0
     );
   }
+
+  validateOrder(): void {
+  if (!this.userId) return;
+
+  this.orderService.addOrder(this.userId).subscribe({
+    next: (res) => {
+      alert('Commande validée avec succès !');
+      this.cartItems = [];
+      this.totalPrice = 0;
+    },
+    error: (err) => {
+      console.error('Erreur validation commande', err);
+      alert('Erreur lors de la validation de la commande.');
+    }
+  });
+}
+
 }

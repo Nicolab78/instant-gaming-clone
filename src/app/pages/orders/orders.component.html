@@ -1,0 +1,14 @@
+<div class="orders-container">
+  <h1>Mes commandes</h1>
+
+  <div *ngIf="orders.length === 0">
+    <p>Vous n'avez passé aucune commande.</p>
+  </div>
+
+  <div *ngFor="let order of orders" class="order-item">
+    <h3>Commande #{{ order.id }}</h3>
+    <p>Date : {{ order.created_at | date:'short' }}</p>
+    <p>Total : {{ order.total_price }} €</p>
+    <button (click)="viewOrderDetails(order.id)">Voir détails</button>
+  </div>
+</div>

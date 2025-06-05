@@ -7,6 +7,7 @@
 
     <ng-container *ngIf="isLoggedIn$ | async; else guestLinks">
       <li><a routerLink="/wishlist">Wishlist</a></li>
+      <li><a routerLink="/orders">Commandes</a></li>
       <li><a routerLink="/profile">Profil</a></li>
       <li><a (click)="logout()" style="cursor: pointer;">Déconnexion</a></li>
     </ng-container>

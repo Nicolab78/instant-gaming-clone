@@ -51,7 +51,7 @@ exports.addToCart = (req, res) => {
 
 exports.getCart = (req, res) => {
   const user_id = req.params.userId;
-  console.log("🎯 getCart exécuté pour l'utilisateur :", req.params.userId);
+  console.log("getCart exécuté pour l'utilisateur :", req.params.userId);
 
   const sql = `
     SELECT g.*, ci.quantity
