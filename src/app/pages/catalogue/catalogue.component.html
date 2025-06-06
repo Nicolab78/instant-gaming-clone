@@ -1,13 +1,32 @@
-<div class="catalogue-container">
-    <h1>Catalogue des jeux</h1>
-  
-    <div class="games-grid">
-      <app-game-card
-        *ngFor="let game of games"
-        [game]="game">
+<div class="max-w-7xl mx-auto px-4 py-10">
+  <h1 class="text-3xl font-bold text-center text-gray-900 mb-10">Catalogue des jeux</h1>
 
-        
+  <div class="container mx-auto border-2 border-gray-200 rounded-lg shadow-lg p-6 bg-white">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <app-game-card
+        *ngFor="let game of paginatedGames"
+        [game]="game">
       </app-game-card>
     </div>
-  </div>
-  
+
+    <div class="flex justify-between items-center mt-8">
+      <button 
+        (click)="previousPage()" 
+        [disabled]="currentPage === 1"
+        class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50">
+        ⬅ Précédent
+      </button>
+
+      <span class="text-gray-600 font-medium">
+        Page {{ currentPage }} / {{ totalPages }}
+      </span>
+
+      <button 
+        (click)="nextPage()" 
+        [disabled]="currentPage === totalPages"
+        class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50">
+        Suivant ➡
+      </button>
+    </div>
+  </div>  
+</div>

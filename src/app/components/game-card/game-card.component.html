@@ -1,11 +1,12 @@
-<a [routerLink]="['/catalogue', game.id]" class="game-card-link">
-  <div class="game-card">
-    <img *ngIf="game.image_url" [src]="'assets/img/' + game.image_url" [alt]="game.title">
-    <h3>{{ game.title }}</h3>
-    <p>{{ game.description }}</p>
-    <strong>{{ game.price }} €</strong>
-    <button>Ajouter au panier</button>
-  </div>
-</a>
+<div class="p-4">
+  <a [routerLink]="['/catalogue', game.id]">
+    <div class="border border-black rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300">
+      
 
-  
+      <h3 class="text-lg font-bold text-gray-900 mb-2">{{ game.title }}</h3>
+      <p class="text-sm text-gray-700 mb-3">{{ game.description }}</p>
+      <div class="text-green-600 font-semibold">{{ game.price }} €</div>
+      
+    </div>
+  </a>
+</div>
