@@ -1,12 +1,10 @@
 <div class="max-w-4xl mx-auto p-6">
   <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Mon panier</h1>
 
-  <!-- Panier vide -->
   <div *ngIf="cartItems.length === 0" class="text-center text-gray-500">
     <p>Ton panier est vide</p>
   </div>
 
-  <!-- Liste des jeux du panier -->
   <div *ngFor="let game of cartItems" class="border border-gray-200 rounded-lg p-4 mb-4 bg-white shadow-sm">
     <h3 class="text-lg font-semibold text-gray-800">{{ game.title }}</h3>
     <p class="text-sm text-gray-600">{{ game.description }}</p>
@@ -22,7 +20,6 @@
     </button>
   </div>
 
-  <!-- Total et bouton validation -->
   <div *ngIf="cartItems.length > 0" class="text-right mt-6 border-t pt-6">
     <h3 class="text-xl font-bold text-gray-900 mb-4">Total : {{ totalPrice.toFixed(2) }} €</h3>
 
