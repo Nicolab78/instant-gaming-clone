@@ -1,17 +1,28 @@
-<div class="wishlist_container">
-  <h1>Ma wishlist</h1>
+<div class="max-w-5xl mx-auto px-4 py-10">
+  <h1 class="text-3xl font-bold text-center text-gray-900 mb-8">Ma wishlist</h1>
 
-  <div *ngIf="message" class="success">{{ message }}</div>
-  <div *ngIf="error" class="error">{{ error }}</div>
+  <div *ngIf="message" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+    {{ message }}
+  </div>
 
-  <div *ngIf="wishlist.length === 0">
+  <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+    {{ error }}
+  </div>
+
+  <div *ngIf="wishlist.length === 0" class="text-center text-gray-600">
     <p>Ta wishlist est vide</p>
   </div>
 
-  <div *ngFor="let game of wishlist" class="wishlist-item">
-    <h3>{{ game.title }}</h3>
-    <p>{{ game.description }}</p>
-    <strong>{{ game.price }} €</strong>
-    <button (click)="removeFromWishlist(game.id)">Retirer de la wishlist</button>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let game of wishlist" class="bg-white border border-gray-300 rounded-lg shadow-md p-6">
+      <h3 class="text-lg font-bold text-gray-800 mb-2">{{ game.title }}</h3>
+      <p class="text-gray-600 text-sm mb-4">{{ game.description }}</p>
+      <p class="text-green-600 font-semibold text-md mb-4">{{ game.price }} €</p>
+      <button
+        (click)="removeFromWishlist(game.id)"
+        class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition duration-200">
+        Retirer de la wishlist
+      </button>
+    </div>
   </div>
 </div>

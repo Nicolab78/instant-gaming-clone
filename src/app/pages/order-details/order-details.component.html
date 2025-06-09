@@ -1,16 +1,22 @@
-<h1>Détails de la commande #{{ orderId }}</h1>
+<div class="max-w-4xl mx-auto p-6">
+  <h1 class="text-3xl font-bold text-gray-800 mb-6">Détails de la commande #{{ orderId }}</h1>
 
-<div *ngIf="items.length === 0">
-  <p>Aucun article dans cette commande.</p>
-</div>
-
-<div *ngIf="items.length > 0">
-  <div *ngFor="let item of items">
-    <h3>{{ item.title }}</h3>
-    <p>Quantité : {{ item.quantity }}</p>
-    <p>Prix unitaire : {{ item.price }} €</p>
-    <p>Sous-total : {{ item.price * item.quantity | number:'1.2-2' }} €</p>
+  <div *ngIf="items.length === 0" class="text-gray-500">
+    <p>Aucun article dans cette commande.</p>
   </div>
 
-  <h2>Total : {{ totalPrice | number:'1.2-2' }} €</h2>
+  <div *ngIf="items.length > 0" class="space-y-6">
+    <div *ngFor="let item of items" class="border border-gray-200 rounded-lg p-4 shadow-sm bg-white">
+      <h3 class="text-lg font-semibold text-gray-700">{{ item.title }}</h3>
+      <p class="text-sm text-gray-600">Quantité : {{ item.quantity }}</p>
+      <p class="text-sm text-gray-600">Prix unitaire : {{ item.price }} €</p>
+      <p class="text-sm font-medium text-gray-800">Sous-total :
+        {{ item.price * item.quantity | number:'1.2-2' }} €
+      </p>
+    </div>
+
+    <div class="text-right text-xl font-bold text-gray-900 mt-6">
+      Total : {{ totalPrice | number:'1.2-2' }} €
+    </div>
+  </div>
 </div>

@@ -1,15 +1,15 @@
 const db = require('../db');
 
 exports.addToWishlist = (req, res) => {
-  const { user_email, game_id } = req.body;
+  const { user_id, game_id } = req.body;
 
-  if (!user_email || !game_id) {
+  if (!user_id || !game_id) {
     return res.status(400).json({ message: 'Champs manquants' });
   }
 
-  const sql = 'INSERT INTO wishlists (user_email, game_id) VALUES (?, ?)';
+  const sql = 'INSERT INTO wishlists (user_id, game_id) VALUES (?, ?)';
 
-  db.query(sql, [user_email, game_id], (err) => {
+  db.query(sql, [user_id, game_id], (err) => {
     if (err) {
       console.error("Erreur SQL :", err);
       return res.status(500).json({ message: 'Erreur ajout wishlist' });
@@ -19,20 +19,20 @@ exports.addToWishlist = (req, res) => {
 };
 
 exports.getWishlist = (req, res) => {
-  const email = req.params.email;
+  const user_id = req.params.user_id;
 
-  if (!email) {
-    return res.status(400).json({ message: 'Email requis' });
+  if (!user_id) {
+    return res.status(400).json({ message: 'ID utilisateur requis' });
   }
 
   const sql = `
     SELECT g.* 
     FROM wishlists w 
     JOIN games g ON w.game_id = g.id 
-    WHERE w.user_email = ?
+    WHERE w.user_id = ?
   `;
 
-  db.query(sql, [email], (err, results) => {
+  db.query(sql, [user_id], (err, results) => {
     if (err) {
       console.error("Erreur SQL :", err);
       return res.status(500).json({ message: 'Erreur chargement wishlist' });
@@ -42,14 +42,14 @@ exports.getWishlist = (req, res) => {
 };
 
 exports.removeFromWishlist = (req, res) => {
-  const { email, game_id } = req.params;
+  const { user_id, game_id } = req.params;
 
-  if (!email || !game_id) {
+  if (!user_id || !game_id) {
     return res.status(400).json({ message: 'Champs manquants' });
   }
 
-  const sql = 'DELETE FROM wishlists WHERE user_email = ? AND game_id = ?';
-  db.query(sql, [email, game_id], (err, result) => {
+  const sql = 'DELETE FROM wishlists WHERE user_id = ? AND game_id = ?';
+  db.query(sql, [user_id, game_id], (err, result) => {
     if (err) {
       console.error('Erreur suppression wishlist', err);
       return res.status(500).json({ message: 'Erreur serveur' });

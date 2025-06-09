@@ -3,7 +3,7 @@ const router = express.Router();
 const wishlistController = require('../controllers/wishlist.controller');
 
 router.post('/', wishlistController.addToWishlist);
-router.get('/:email', wishlistController.getWishlist);
-router.delete('/:email/:game_id', wishlistController.removeFromWishlist);
+router.get('/:user_id', wishlistController.getWishlist);
+router.delete('/:user_id/:game_id', wishlistController.removeFromWishlist);
 
 module.exports = router;
