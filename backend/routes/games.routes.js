@@ -8,6 +8,9 @@ router.get('/:id', gamesController.getGameById);
 router.get('/:id/reviews', reviewsController.getReviewsByGameId);
 router.post('/:id/reviews', reviewsController.addReview);
 
+router.post('/', gamesController.createGame);
+router.put('/:id', gamesController.updateGame);
+router.delete('/:id', gamesController.deleteGame);
 
 module.exports = router;
 

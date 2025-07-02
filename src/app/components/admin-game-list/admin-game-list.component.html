@@ -1,0 +1,84 @@
+<div class="bg-white rounded-lg shadow-md">
+  <div class="p-6 border-b border-gray-200">
+    <h2 class="text-xl font-semibold">Liste des jeux ({{ games.length }})</h2>
+  </div>
+  
+  <div class="overflow-x-auto">
+    <table class="w-full">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Titre
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Prix
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Stock
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Date de sortie
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let game of games" class="hover:bg-gray-50">
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="flex items-center">
+              <img 
+                *ngIf="game.image_url" 
+                [src]="game.image_url" 
+                [alt]="game.title"
+                class="h-10 w-10 rounded-md object-cover mr-3"
+                onerror="this.style.display='none'"
+              />
+              <div>
+                <div class="text-sm font-medium text-gray-900">{{ game.title }}</div>
+                <div class="text-sm text-gray-500">{{ game.description | slice:0:50 }}{{ game.description && game.description.length > 50 ? '...' : '' }}</div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-gray-900">{{ game.price | currency:'EUR':'symbol':'1.2-2' }}</div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <span 
+              class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
+              [class]="game.stock > 10 ? 'bg-green-100 text-green-800' : game.stock > 0 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'"
+            >
+              {{ game.stock }} en stock
+            </span>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-gray-900">
+              {{ game.release_date | date:'dd/MM/yyyy' }}
+            </div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+            <button
+              (click)="editGame(game)"
+              class="text-indigo-600 hover:text-indigo-900 mr-4"
+            >
+              Modifier
+            </button>
+            <button
+              (click)="deleteGame(game.id!)"
+              class="text-red-600 hover:text-red-900"
+            >
+              Supprimer
+            </button>
+          </td>
+        </tr>
+        
+        <tr *ngIf="games.length === 0">
+          <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+            Aucun jeu trouvé
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

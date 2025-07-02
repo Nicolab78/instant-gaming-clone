@@ -16,4 +16,6 @@ export class GameService {
     console.log('🛰️ Appel de getGames() vers :', this.apiUrl);
     return this.http.get<any[]>(this.apiUrl);
   }
+
+  
 }

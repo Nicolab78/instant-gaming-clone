@@ -1,0 +1,18 @@
+<div class="min-h-screen bg-gray-100 p-6">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl font-bold text-gray-800 mb-8">Administration des Jeux</h1>
+    
+    <!-- Formulaire -->
+    <app-admin-game-form 
+      [editGame]="selectedGame"
+      (gameCreated)="onGameCreated()"
+      (gameUpdated)="onGameUpdated()"
+      (formCancelled)="onFormCancelled()">
+    </app-admin-game-form>
+
+    <!-- Liste -->
+    <app-admin-game-list 
+      (editGameSelected)="onEditGame($event)">
+    </app-admin-game-list>
+  </div>
+</div>
